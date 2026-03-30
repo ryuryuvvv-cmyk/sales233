@@ -28,8 +28,13 @@
     .undo-bar.show { display: flex; }
     .undo-btn { background: #3b82f6; border: none; color: white; padding: 8px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; }
     
-    .voice-box { background: white; padding: 14px; border-bottom: 3px solid #059669; }
-    .voice-label { font-size: 12px; color: #666; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .voice-box { background: white; border-bottom: 1px solid #e5e7eb; }
+    .voice-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; cursor: pointer; user-select: none; }
+    .voice-label { font-size: 12px; color: #666; display: flex; align-items: center; gap: 6px; }
+    .voice-toggle { font-size: 10px; color: #999; margin-left: 6px; transition: transform 0.2s; display: inline-block; }
+    .voice-box.open .voice-toggle { transform: rotate(90deg); }
+    .voice-body { display: none; padding: 0 14px 14px; }
+    .voice-box.open .voice-body { display: block; }
     .voice-text { font-size: 15px; line-height: 1.6; background: #f0fdf4; padding: 12px; border-radius: 10px; border: 1px solid #bbf7d0; min-height: 50px; color: #333; }
     .voice-text.empty { color: #999; }
     .voice-text .match { background: #fef08a; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
@@ -124,11 +129,6 @@
     ⚠️ このブラウザは音声認識に対応していません。<br><strong>Chrome</strong>をご利用ください。
 </div>
 
-<div class="voice-box">
-    <div class="voice-label">🎧 リアルタイム認識</div>
-    <div class="voice-text empty" id="voiceText">マイクをONにして話してください</div>
-</div>
-
 <div class="tabs-area">
     <div class="tabs-header">
         <span class="tabs-title">🔔 検出キーワード <span class="tabs-count" id="tabCount">0</span></span>
@@ -139,16 +139,6 @@
     </div>
     <div id="tabsContainer" class="tabs-container">
         <span class="tabs-empty">キーワードを検出すると表示されます</span>
-    </div>
-</div>
-
-<div class="modal-overlay" id="historyModal" onclick="closeHistory(event)">
-    <div class="modal" onclick="event.stopPropagation()">
-        <div class="modal-header">
-            <span class="modal-title">📋 検出履歴（直近10件）</span>
-            <button class="modal-close" onclick="closeHistory()">&times;</button>
-        </div>
-        <div class="modal-body" id="historyList"></div>
     </div>
 </div>
 
@@ -171,6 +161,25 @@
 <div class="btns">
     <div class="btns-title">📌 手動選択</div>
     <div class="btns-grid" id="btnsGrid"></div>
+</div>
+
+<div class="voice-box" id="voicePanel">
+    <div class="voice-header" onclick="toggleVoice()">
+        <span class="voice-label">🎧 リアルタイム認識<span class="voice-toggle">▶</span></span>
+    </div>
+    <div class="voice-body">
+        <div class="voice-text empty" id="voiceText">マイクをONにして話してください</div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="historyModal" onclick="closeHistory(event)">
+    <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <span class="modal-title">📋 検出履歴（直近10件）</span>
+            <button class="modal-close" onclick="closeHistory()">&times;</button>
+        </div>
+        <div class="modal-body" id="historyList"></div>
+    </div>
 </div>
 
 <div class="log" id="logPanel">
@@ -497,6 +506,10 @@ function downloadLog() {
     a.href = URL.createObjectURL(new Blob([txt], {type:'text/plain'}));
     a.download = 'transcript_' + new Date().toISOString().slice(0,10) + '.txt';
     a.click();
+}
+
+function toggleVoice() {
+    document.getElementById('voicePanel').classList.toggle('open');
 }
 
 function toggleLog() {

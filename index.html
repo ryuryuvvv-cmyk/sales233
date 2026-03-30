@@ -4,91 +4,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>自販機営業アシスト v9</title>
+    <title>営業アシスト</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif; background: #f5f7fa; min-height: 100vh; display: flex; flex-direction: column; }
 
 ```
-    .header { background: linear-gradient(135deg, #059669, #047857); padding: 10px 16px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; }
-    .header h1 { color: white; font-size: 14px; flex: 1; }
+    .header { background: linear-gradient(135deg, #059669, #047857); padding: 12px 16px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .header h1 { color: white; font-size: 15px; flex: 1; }
     .status { font-size: 11px; color: rgba(255,255,255,0.8); display: flex; align-items: center; gap: 4px; }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #666; }
     .status-dot.active { background: #4ade80; animation: blink 1s infinite; }
     @keyframes blink { 50% { opacity: 0.5; } }
     
-    .mic-btn { background: #dc2626; color: white; border: none; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+    .mic-btn { background: #dc2626; color: white; border: none; padding: 10px 18px; border-radius: 25px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; }
     .mic-btn.on { background: #16a34a; animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.7); } 50% { box-shadow: 0 0 0 8px rgba(22,163,74,0); } }
+    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(22,163,74,0.7); } 50% { box-shadow: 0 0 0 10px rgba(22,163,74,0); } }
     
-    .reconnect { display: none; background: #fef3c7; color: #92400e; font-size: 11px; padding: 6px 12px; text-align: center; }
+    .reconnect { display: none; background: #fef3c7; color: #92400e; font-size: 11px; padding: 8px 12px; text-align: center; }
     .reconnect.show { display: block; }
     
     .undo-bar { display: none; background: #1f2937; color: white; font-size: 12px; padding: 10px 16px; justify-content: space-between; align-items: center; }
     .undo-bar.show { display: flex; }
-    .undo-btn { background: #3b82f6; border: none; color: white; padding: 6px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; }
+    .undo-btn { background: #3b82f6; border: none; color: white; padding: 8px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; }
     
-    .voice-box { background: white; padding: 12px; border-bottom: 2px solid #059669; }
-    .voice-label { font-size: 11px; color: #666; margin-bottom: 6px; }
-    .voice-text { font-size: 14px; line-height: 1.5; background: #f0fdf4; padding: 10px; border-radius: 8px; border: 1px solid #bbf7d0; min-height: 40px; color: #333; }
+    .voice-box { background: white; padding: 14px; border-bottom: 3px solid #059669; }
+    .voice-label { font-size: 12px; color: #666; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .voice-text { font-size: 15px; line-height: 1.6; background: #f0fdf4; padding: 12px; border-radius: 10px; border: 1px solid #bbf7d0; min-height: 50px; color: #333; }
     .voice-text.empty { color: #999; }
-    .voice-text .match { background: #fef08a; padding: 1px 4px; border-radius: 3px; }
+    .voice-text .match { background: #fef08a; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
     
-    .tabs-area { background: #fffbeb; border: 2px solid #f59e0b; padding: 8px 12px; }
-    .tabs-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .tabs-title { font-size: 11px; color: #666; }
-    .tabs-actions { display: flex; gap: 6px; }
-    .tabs-action-btn { background: #f3f4f6; border: 1px solid #d1d5db; padding: 4px 10px; border-radius: 4px; font-size: 10px; color: #374151; cursor: pointer; }
+    .tabs-area { background: white; border-bottom: 1px solid #e5e7eb; padding: 10px 14px; }
+    .tabs-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .tabs-title { font-size: 12px; color: #666; display: flex; align-items: center; gap: 6px; }
+    .tabs-count { background: #059669; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; }
+    .tabs-actions { display: flex; gap: 8px; }
+    .tabs-action-btn { background: #f3f4f6; border: 1px solid #d1d5db; padding: 6px 12px; border-radius: 6px; font-size: 11px; color: #374151; cursor: pointer; }
     .tabs-action-btn:hover { background: #e5e7eb; }
-    .tabs-container { display: flex; gap: 6px; flex-wrap: wrap; min-height: 36px; align-items: center; background: #fff; padding: 4px; border-radius: 4px; }
-    .tab { background: #ecfdf5; border: 2px solid #059669; padding: 8px 14px; border-radius: 20px; font-size: 13px; color: #047857; cursor: pointer; font-weight: bold; }
-    .tab.active { background: #059669; color: white; }
-    .tabs-empty { font-size: 11px; color: #999; padding: 6px 0; }
-    
-    /* デバッグ表示 */
-    .debug { background: #1e1e1e; border: 1px solid #333; padding: 8px 12px; font-size: 10px; color: #0f0; font-family: monospace; max-height: 120px; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
+    .tabs-container { display: flex; gap: 8px; flex-wrap: wrap; min-height: 40px; align-items: center; }
+    .tab { background: #ecfdf5; border: 2px solid #10b981; padding: 8px 16px; border-radius: 20px; font-size: 13px; color: #047857; cursor: pointer; font-weight: bold; transition: all 0.2s; }
+    .tab:hover { background: #d1fae5; }
+    .tab.active { background: #059669; color: white; border-color: #059669; }
+    .tabs-empty { font-size: 12px; color: #999; }
     
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: flex-end; }
     .modal-overlay.show { display: flex; }
-    .modal { background: white; width: 100%; max-height: 60vh; border-radius: 16px 16px 0 0; overflow: hidden; }
-    .modal-header { padding: 14px 16px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
-    .modal-title { font-size: 14px; font-weight: bold; }
-    .modal-close { background: none; border: none; font-size: 20px; color: #666; cursor: pointer; }
+    .modal { background: white; width: 100%; max-height: 60vh; border-radius: 20px 20px 0 0; overflow: hidden; }
+    .modal-header { padding: 16px; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 15px; font-weight: bold; }
+    .modal-close { background: none; border: none; font-size: 24px; color: #666; cursor: pointer; }
     .modal-body { padding: 8px 0; max-height: 50vh; overflow-y: auto; }
-    .history-item { padding: 12px 16px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .history-item { padding: 14px 16px; border-bottom: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
     .history-item:hover { background: #f9fafb; }
     .history-item:last-child { border-bottom: none; }
-    .history-name { font-size: 13px; color: #111; }
-    .history-time { font-size: 11px; color: #999; }
-    .history-empty { padding: 30px; text-align: center; color: #999; font-size: 13px; }
+    .history-name { font-size: 14px; color: #111; }
+    .history-time { font-size: 12px; color: #999; }
+    .history-empty { padding: 40px; text-align: center; color: #999; font-size: 14px; }
     
-    .content { flex: 1; overflow-y: auto; padding: 12px; }
-    .card { background: white; border-radius: 10px; padding: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+    .content { flex: 1; overflow-y: auto; padding: 14px; }
+    .card { background: white; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .card.hidden { display: none; }
-    .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid #e5e7eb; }
-    .card-type { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: #d1fae5; color: #059669; font-weight: bold; }
-    .card-title { font-size: 15px; font-weight: bold; color: #111; }
-    .card-body { font-size: 13px; line-height: 1.8; color: #333; }
+    .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid #e5e7eb; }
+    .card-type { font-size: 11px; padding: 4px 10px; border-radius: 12px; background: #d1fae5; color: #059669; font-weight: bold; }
+    .card-title { font-size: 17px; font-weight: bold; color: #111; }
+    .card-body { font-size: 14px; line-height: 1.9; color: #333; }
     
-    .default-msg { text-align: center; color: #999; padding: 20px; font-size: 13px; }
+    .default-msg { text-align: center; color: #999; padding: 30px; font-size: 14px; }
+    .default-msg .icon { font-size: 40px; margin-bottom: 10px; }
     
-    .btns { background: white; border-top: 1px solid #e0e0e0; padding: 10px; }
-    .btns-title { font-size: 11px; color: #666; margin-bottom: 6px; }
-    .btns-grid { display: flex; flex-wrap: wrap; gap: 6px; }
-    .btn { background: #f3f4f6; border: 1px solid #d1d5db; padding: 7px 11px; border-radius: 16px; font-size: 11px; color: #374151; cursor: pointer; }
+    .btns { background: white; border-top: 1px solid #e0e0e0; padding: 12px; }
+    .btns-title { font-size: 12px; color: #666; margin-bottom: 8px; }
+    .btns-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .btn { background: #f3f4f6; border: 1px solid #d1d5db; padding: 10px 14px; border-radius: 20px; font-size: 12px; color: #374151; cursor: pointer; transition: all 0.2s; }
     .btn:hover, .btn.active { background: #059669; color: white; border-color: #059669; }
     
-    .log { background: #1f2937; color: #e5e7eb; padding: 10px; max-height: 80px; overflow-y: auto; }
-    .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .log-title { font-size: 10px; color: #9ca3af; }
-    .log-actions { display: flex; gap: 6px; }
-    .log-btn { background: #374151; border: none; color: #d1d5db; padding: 4px 8px; border-radius: 4px; font-size: 10px; cursor: pointer; }
-    .log-content { font-size: 10px; line-height: 1.6; font-family: monospace; }
-    .log-entry { margin-bottom: 2px; }
+    .log { background: #1f2937; color: #e5e7eb; padding: 12px; max-height: 120px; overflow-y: auto; }
+    .log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .log-title { font-size: 11px; color: #9ca3af; }
+    .log-actions { display: flex; gap: 8px; }
+    .log-btn { background: #374151; border: none; color: #d1d5db; padding: 6px 10px; border-radius: 4px; font-size: 11px; cursor: pointer; }
+    .log-btn:hover { background: #4b5563; }
+    .log-content { font-size: 11px; line-height: 1.7; font-family: monospace; }
+    .log-entry { margin-bottom: 4px; }
     .log-time { color: #6b7280; }
     .log-match { color: #fbbf24; }
     
-    .not-supported { display: none; background: #fef2f2; border: 2px solid #fecaca; border-radius: 8px; padding: 16px; margin: 16px; text-align: center; color: #991b1b; font-size: 13px; }
+    .not-supported { display: none; background: #fef2f2; border: 2px solid #fecaca; border-radius: 10px; padding: 20px; margin: 16px; text-align: center; color: #991b1b; font-size: 14px; }
     .not-supported.show { display: block; }
 </style>
 ```
@@ -97,7 +98,7 @@
 <body>
 
 <header class="header">
-    <h1>🥤 v9</h1>
+    <h1>🥤 営業アシスト</h1>
     <div class="status">
         <div class="status-dot" id="statusDot"></div>
         <span id="statusText">待機中</span>
@@ -108,43 +109,39 @@
     </button>
 </header>
 
-<div class="reconnect" id="reconnect">🔄 再接続</div>
+<div class="reconnect" id="reconnect">🔄 再接続しました</div>
 
 <div class="undo-bar" id="undoBar">
-    <span>クリアしました</span>
+    <span>タブをクリアしました</span>
     <button class="undo-btn" onclick="undoClear()">↩ 戻す</button>
 </div>
 
-<div class="not-supported" id="notSupported">⚠️ Chrome推奨</div>
+<div class="not-supported" id="notSupported">
+    ⚠️ このブラウザは音声認識に対応していません。<br><strong>Chrome</strong>をご利用ください。
+</div>
 
 <div class="voice-box">
     <div class="voice-label">🎧 リアルタイム認識</div>
-    <div class="voice-text empty" id="voiceText">マイクONで話してください</div>
+    <div class="voice-text empty" id="voiceText">マイクをONにして話してください</div>
 </div>
-
-<!-- タブエリア（目立つように黄色背景） -->
 
 <div class="tabs-area">
     <div class="tabs-header">
-        <span class="tabs-title">🔔 検出: <strong id="tabCount">0</strong>個</span>
+        <span class="tabs-title">🔔 検出キーワード <span class="tabs-count" id="tabCount">0</span></span>
         <div class="tabs-actions">
-            <button class="tabs-action-btn" onclick="showHistory()">履歴</button>
-            <button class="tabs-action-btn" onclick="clearTabs()">✕</button>
+            <button class="tabs-action-btn" onclick="showHistory()">📋 履歴</button>
+            <button class="tabs-action-btn" onclick="clearTabs()">✕ クリア</button>
         </div>
     </div>
     <div id="tabsContainer" class="tabs-container">
-        <span id="tabsEmpty" class="tabs-empty">ここにタブが出ます</span>
+        <span class="tabs-empty">キーワードを検出すると表示されます</span>
     </div>
 </div>
-
-<!-- デバッグ -->
-
-<div class="debug" id="debug">[ DEBUG ]</div>
 
 <div class="modal-overlay" id="historyModal" onclick="closeHistory(event)">
     <div class="modal" onclick="event.stopPropagation()">
         <div class="modal-header">
-            <span class="modal-title">📋 履歴</span>
+            <span class="modal-title">📋 検出履歴（直近10件）</span>
             <button class="modal-close" onclick="closeHistory()">&times;</button>
         </div>
         <div class="modal-body" id="historyList"></div>
@@ -154,13 +151,16 @@
 <div class="content">
     <div class="card hidden" id="resultCard">
         <div class="card-header">
-            <span class="card-type">切り返し</span>
+            <span class="card-type">切り返しトーク</span>
             <span class="card-title" id="resultTitle"></span>
         </div>
         <div class="card-body" id="resultBody"></div>
     </div>
     <div class="card" id="defaultCard">
-        <div class="default-msg">🎤 音声で自動検出</div>
+        <div class="default-msg">
+            <div class="icon">🎤</div>
+            音声でキーワードを自動検出<br>または下から手動で選択
+        </div>
     </div>
 </div>
 
@@ -171,7 +171,7 @@
 
 <div class="log">
     <div class="log-header">
-        <span class="log-title">📝 ログ</span>
+        <span class="log-title">📝 文字起こしログ（直近30件）</span>
         <div class="log-actions">
             <button class="log-btn" onclick="copyLog()">コピー</button>
             <button class="log-btn" onclick="downloadLog()">保存</button>
@@ -183,16 +183,16 @@
 
 <script>
 var DATA = [
-    { id:1, title:"電気代が心配", kw:["電気","電気代","光熱費","コスト","維持費","ランニング","月々","料金"], body:"最新の省エネ機種は従来比40%削減。月3,000〜4,000円程度で、売上の5〜10%に収まります。" },
-    { id:2, title:"場所がない", kw:["場所","スペース","狭い","置く","設置","入らない","邪魔","幅"], body:"スリムタイプは幅50cmから設置可能。看板や植栽を少し移動するだけで置けるケースも多いです。" },
-    { id:3, title:"売れるか不安", kw:["売れ","売上","需要","利用者","買う人","儲か","収入","利益"], body:"オフィス立地で1日30〜50本、住宅街でも15〜30本が目安。売上の20%をお支払い。" },
-    { id:4, title:"管理が面倒", kw:["管理","面倒","手間","補充","メンテ","故障","壊れ","誰が"], body:"商品補充、売上金回収、清掃、故障対応まで全て弊社が行います。" },
-    { id:5, title:"契約期間が長い", kw:["契約","期間","何年","縛り","解約","年数","長い"], body:"基本3年契約ですが、閉店・移転等の場合は違約金なしで解約できる条項もあります。" },
-    { id:6, title:"他社と契約中", kw:["他社","別の会社","契約中","既に","今の","入ってる"], body:"現在の条件を教えていただければ、比較資料をお出しします。" },
-    { id:7, title:"防犯が心配", kw:["防犯","いたずら","壊され","治安","セキュリティ","荒らさ","盗ま"], body:"防犯カメラ内蔵タイプもあり、頑丈な筐体で簡単には壊れません。" },
-    { id:8, title:"見た目が気になる", kw:["見た目","デザイン","景観","雰囲気","ダサ","おしゃれ","外観"], body:"木目調やマット仕上げなど選べます。店舗ロゴのラッピングも可能。" },
-    { id:9, title:"今は必要ない", kw:["必要ない","いらない","今は","間に合","結構","大丈夫","不要"], body:"設置費・維持費ゼロで副収入が得られます。" },
-    { id:10, title:"時間がない", kw:["時間","忙し","また今度","後で","今日は","急いで"], body:"資料だけお渡しします。3分でわかる概要と収益シミュレーション付き。" }
+    { id:1, title:"電気代が心配", kw:["電気","電気代","光熱費","コスト","維持費","ランニング","月々","料金"], body:"最新の省エネ機種は従来比40%削減。月3,000〜4,000円程度で、売上の5〜10%に収まります。LED照明やヒートポンプで夏冬も抑えられます。" },
+    { id:2, title:"場所がない", kw:["場所","スペース","狭い","置く","設置","入らない","邪魔","幅"], body:"スリムタイプは幅50cmから設置可能。看板や植栽を少し移動するだけで置けるケースも多いです。現地調査で最適プランをご提案します。" },
+    { id:3, title:"売れるか不安", kw:["売れ","売上","需要","利用者","買う人","儲か","収入","利益"], body:"オフィス立地で1日30〜50本、住宅街でも15〜30本が目安。売上の20%をお支払い。月3万円売上なら月6,000円の収入。初期費用ゼロです。" },
+    { id:4, title:"管理が面倒", kw:["管理","面倒","手間","補充","メンテ","故障","壊れ","誰が"], body:"商品補充、売上金回収、清掃、故障対応まで全て弊社が行います。24時間コールセンターで即日対応します。" },
+    { id:5, title:"契約期間が長い", kw:["契約","期間","何年","縛り","解約","年数","長い"], body:"基本3年契約ですが、閉店・移転等の場合は違約金なしで解約できる条項もあります。まずお試しください。" },
+    { id:6, title:"他社と契約中", kw:["他社","別の会社","契約中","既に","今の","入ってる"], body:"現在の条件を教えていただければ、比較資料をお出しします。契約更新時に切り替えるお客様も多いですよ。" },
+    { id:7, title:"防犯が心配", kw:["防犯","いたずら","壊され","治安","セキュリティ","荒らさ","盗ま"], body:"防犯カメラ内蔵タイプもあり、頑丈な筐体で簡単には壊れません。万が一の被害も弊社保険で対応します。" },
+    { id:8, title:"見た目が気になる", kw:["見た目","デザイン","景観","雰囲気","ダサ","おしゃれ","外観"], body:"木目調やマット仕上げなど選べます。店舗ロゴのラッピングも可能。設置場所に合わせてご提案します。" },
+    { id:9, title:"今は必要ない", kw:["必要ない","いらない","今は","間に合","結構","大丈夫","不要"], body:"設置費・維持費ゼロで副収入が得られます。検討されることがあればいつでもご連絡ください。" },
+    { id:10, title:"時間がない", kw:["時間","忙し","また今度","後で","今日は","急いで"], body:"資料だけお渡しします。3分でわかる概要と収益シミュレーション付き。ご興味あればお電話ください。" }
 ];
 
 var activeTabs = [];
@@ -207,15 +207,7 @@ var TAB_LIMIT = 5;
 var HISTORY_LIMIT = 10;
 var LOG_LIMIT = 30;
 
-function debug(msg) {
-    var el = document.getElementById('debug');
-    var time = new Date().toLocaleTimeString('ja-JP');
-    el.textContent = '[' + time + '] ' + msg + '\n' + el.textContent;
-}
-
 function init() {
-    debug('init');
-    
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { 
         document.getElementById('notSupported').classList.add('show'); 
@@ -227,7 +219,9 @@ function init() {
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.onresult = onResult;
-    recognition.onerror = function(e) { debug('error: ' + e.error); };
+    recognition.onerror = function(e) { 
+        if (e.error === 'not-allowed') alert('マイクの使用を許可してください'); 
+    };
     recognition.onend = function() {
         if (isListening) {
             document.getElementById('reconnect').classList.add('show');
@@ -236,21 +230,16 @@ function init() {
         }
     };
     
-    // ボタン生成
     var grid = document.getElementById('btnsGrid');
     for (var i = 0; i < DATA.length; i++) {
         (function(d) {
             var btn = document.createElement('button');
             btn.className = 'btn';
             btn.textContent = d.title;
-            btn.onclick = function() { 
-                addTabDirect(d); 
-            };
+            btn.onclick = function() { addTabDirect(d); };
             grid.appendChild(btn);
         })(DATA[i]);
     }
-    
-    debug('init完了');
 }
 
 function toggleMic() {
@@ -262,7 +251,6 @@ function toggleMic() {
         document.getElementById('micText').textContent = 'OFF';
         document.getElementById('statusDot').classList.remove('active');
         document.getElementById('statusText').textContent = '待機中';
-        debug('マイクOFF');
     } else {
         recognition.start();
         isListening = true;
@@ -271,31 +259,32 @@ function toggleMic() {
         document.getElementById('micText').textContent = 'ON';
         document.getElementById('statusDot').classList.add('active');
         document.getElementById('statusText').textContent = '認識中';
-        debug('マイクON');
     }
 }
 
 function onResult(e) {
     var txt = '';
+    var isFinal = false;
     for (var i = e.resultIndex; i < e.results.length; i++) {
         txt += e.results[i][0].transcript;
+        if (e.results[i].isFinal) isFinal = true;
     }
     if (!txt) return;
     
-    // ハイライト
     var display = txt;
+    var matchedKws = [];
     for (var i = 0; i < DATA.length; i++) {
         for (var j = 0; j < DATA[i].kw.length; j++) {
             var kw = DATA[i].kw[j];
             if (txt.indexOf(kw) !== -1) {
                 display = display.split(kw).join('<span class="match">' + kw + '</span>');
+                if (matchedKws.indexOf(kw) === -1) matchedKws.push(kw);
             }
         }
     }
     document.getElementById('voiceText').innerHTML = display;
     document.getElementById('voiceText').classList.remove('empty');
     
-    // マッチ検出 - 全部チェックしてから追加
     var toAdd = [];
     var currentIds = [];
     for (var i = 0; i < activeTabs.length; i++) {
@@ -304,76 +293,60 @@ function onResult(e) {
     
     for (var i = 0; i < DATA.length; i++) {
         var d = DATA[i];
-        // 既にタブにある？
         var exists = false;
         for (var k = 0; k < currentIds.length; k++) {
             if (currentIds[k] === d.id) { exists = true; break; }
         }
         if (exists) continue;
         
-        // キーワードマッチ？
         var matched = false;
         for (var j = 0; j < d.kw.length; j++) {
             if (txt.indexOf(d.kw[j]) !== -1) {
                 matched = true;
-                debug('MATCH: ' + d.kw[j] + ' → ' + d.title);
                 break;
             }
         }
-        if (matched) {
-            toAdd.push(d);
-        }
+        if (matched) toAdd.push(d);
     }
     
-    // まとめて追加
     if (toAdd.length > 0) {
-        debug('ADD: ' + toAdd.length + '件');
         for (var i = 0; i < toAdd.length; i++) {
             addTabDirect(toAdd[i]);
         }
     }
+    
+    if (isFinal && txt.trim()) {
+        addLog(txt, matchedKws);
+    }
 }
 
 function addTabDirect(d) {
-    // 既存チェック
     for (var i = 0; i < activeTabs.length; i++) {
         if (activeTabs[i].id === d.id) {
-            debug('既存: ' + d.title);
             showResult(d);
-            renderTabsNow();
+            renderTabsNow(d.id);
             return;
         }
     }
     
-    // 上限
     if (activeTabs.length >= TAB_LIMIT) {
         activeTabs.shift();
     }
     
-    // 追加
     var time = new Date().toLocaleTimeString('ja-JP', {hour:'2-digit', minute:'2-digit'});
     activeTabs.push({ id: d.id, title: d.title, time: time });
-    debug('タブ追加: ' + d.title + ' 合計:' + activeTabs.length);
     
-    // 履歴
     historyList.unshift({ id: d.id, title: d.title, time: time });
     if (historyList.length > HISTORY_LIMIT) historyList.pop();
     
-    // 表示
     showResult(d);
-    renderTabsNow();
+    renderTabsNow(d.id);
 }
 
-function renderTabsNow() {
+function renderTabsNow(activeId) {
     var container = document.getElementById('tabsContainer');
-    var countEl = document.getElementById('tabCount');
+    document.getElementById('tabCount').textContent = activeTabs.length;
     
-    debug('renderTabs: ' + activeTabs.length + '個');
-    
-    // カウント更新
-    countEl.textContent = activeTabs.length;
-    
-    // コンテナをクリア
     while (container.firstChild) {
         container.removeChild(container.firstChild);
     }
@@ -381,33 +354,27 @@ function renderTabsNow() {
     if (activeTabs.length === 0) {
         var empty = document.createElement('span');
         empty.className = 'tabs-empty';
-        empty.textContent = 'ここにタブが出ます';
+        empty.textContent = 'キーワードを検出すると表示されます';
         container.appendChild(empty);
-        debug('空表示');
         return;
     }
     
-    // タブを1つずつ追加
     for (var i = 0; i < activeTabs.length; i++) {
-        (function(t, index) {
+        (function(t) {
             var tab = document.createElement('div');
-            tab.className = 'tab';
+            tab.className = t.id === activeId ? 'tab active' : 'tab';
             tab.textContent = t.title;
-            tab.onclick = function() {
-                selectTabById(t.id);
-            };
+            tab.onclick = function() { selectTabById(t.id); };
             container.appendChild(tab);
-            debug('DOM追加: ' + t.title);
-        })(activeTabs[i], i);
+        })(activeTabs[i]);
     }
-    
-    debug('render完了 children:' + container.children.length);
 }
 
 function selectTabById(id) {
     for (var i = 0; i < DATA.length; i++) {
         if (DATA[i].id === id) {
             showResult(DATA[i]);
+            renderTabsNow(id);
             break;
         }
     }
@@ -417,7 +384,7 @@ function clearTabs() {
     if (activeTabs.length === 0) return;
     lastCleared = activeTabs.slice();
     activeTabs = [];
-    renderTabsNow();
+    renderTabsNow(null);
     
     document.getElementById('undoBar').classList.add('show');
     if (undoTimer) clearTimeout(undoTimer);
@@ -431,14 +398,14 @@ function undoClear() {
     if (lastCleared.length === 0) return;
     activeTabs = lastCleared.slice();
     lastCleared = [];
-    renderTabsNow();
+    renderTabsNow(activeTabs[activeTabs.length - 1].id);
     document.getElementById('undoBar').classList.remove('show');
 }
 
 function showHistory() {
     var list = document.getElementById('historyList');
     if (historyList.length === 0) {
-        list.innerHTML = '<div class="history-empty">履歴なし</div>';
+        list.innerHTML = '<div class="history-empty">履歴がありません</div>';
     } else {
         var html = '';
         for (var i = 0; i < historyList.length; i++) {
@@ -473,12 +440,25 @@ function showResult(d) {
     document.getElementById('resultCard').classList.remove('hidden');
     document.getElementById('resultTitle').textContent = d.title;
     document.getElementById('resultBody').textContent = d.body;
+    
+    var btns = document.querySelectorAll('.btn');
+    for (var i = 0; i < btns.length; i++) {
+        if (btns[i].textContent === d.title) {
+            btns[i].classList.add('active');
+        } else {
+            btns[i].classList.remove('active');
+        }
+    }
 }
 
 function addLog(txt, kws) {
     var time = new Date().toLocaleTimeString('ja-JP');
     logList.push({ time: time, txt: txt, kws: kws });
     if (logList.length > LOG_LIMIT) logList.shift();
+    renderLog();
+}
+
+function renderLog() {
     var el = document.getElementById('logContent');
     var html = '';
     for (var i = 0; i < logList.length; i++) {
@@ -487,31 +467,37 @@ function addLog(txt, kws) {
         html += '<div class="log-entry"><span class="log-time">' + e.time + '</span> ' + e.txt + m + '</div>';
     }
     el.innerHTML = html;
+    el.scrollTop = el.scrollHeight;
 }
 
 function copyLog() {
     var txt = '';
     for (var i = 0; i < logList.length; i++) {
         var e = logList[i];
-        txt += e.time + ' ' + e.txt + '\n';
+        var m = e.kws && e.kws.length > 0 ? ' 【' + e.kws.join('、') + '】' : '';
+        txt += e.time + ' ' + e.txt + m + '\n';
     }
-    navigator.clipboard.writeText(txt).then(function() { alert('コピー'); });
+    navigator.clipboard.writeText(txt).then(function() { alert('コピーしました'); });
 }
 
 function downloadLog() {
     var txt = '';
     for (var i = 0; i < logList.length; i++) {
-        txt += logList[i].time + ' ' + logList[i].txt + '\n';
+        var e = logList[i];
+        var m = e.kws && e.kws.length > 0 ? ' 【' + e.kws.join('、') + '】' : '';
+        txt += e.time + ' ' + e.txt + m + '\n';
     }
     var a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([txt], {type:'text/plain'}));
-    a.download = 'log.txt';
+    a.download = 'transcript_' + new Date().toISOString().slice(0,10) + '.txt';
     a.click();
 }
 
 function clearLog() {
-    logList = [];
-    document.getElementById('logContent').innerHTML = '';
+    if (confirm('ログをクリアしますか？')) {
+        logList = [];
+        renderLog();
+    }
 }
 
 init();
